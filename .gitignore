@@ -4,3 +4,6 @@
 # C++
 *.o
 *.out
+
+# Visual Studio
+.vscode
