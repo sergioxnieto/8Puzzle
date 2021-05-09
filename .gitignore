@@ -4,6 +4,8 @@
 # C++
 *.o
 *.out
+main
 
 # Visual Studio
 .vscode
+*.dSYM
