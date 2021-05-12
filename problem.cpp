@@ -1,5 +1,11 @@
 #include "problem.hpp"
 
+/* Problem(): Default constructor to initilize the problem
+upon any new instances */
+Problem::Problem() {
+    init();
+}
+
 /* init(): Core function to fully initialize a Problem instance. 
 Allows for default or custom puzzle selection, algorithm selection,
 and sets the goal (a fully solved 8Puzzle). */
@@ -21,9 +27,21 @@ void Problem::init() {
                 << "or \"2\" to enter your own puzzle\n"; break;
         }
     } while (selection < 1 || selection > 2);
-    algorithm = algorithmChoice();
+    // algorithm = algorithmChoice();
     goal = end;
 
+}
+
+/* getStartPuzzle(): Caller will receive the 8Puzzle starting
+configuration that the user created */
+std::vector<std::vector<int>> Problem::getStartPuzzle() const {
+    return start;
+}
+
+/* getGoalPuzzle(): Caller will receive the 2D array of a fully
+completed 8Puzzle */
+std::vector<std::vector<int>> Problem::getGoalPuzzle() const {
+    return goal;
 }
 
 /* DefaultPuzzle(): Allows the user to make a choice between 1-6
@@ -54,6 +72,9 @@ std::vector<std::vector<int>> Problem::defaultPuzzle() {
             default: std::cout << "Enter a value between 1-6\n"; break;
         }
     } while (selection < 1 || selection > 6);
+
+    // Shouldn't reach here
+    return easy;
 }
 
 /* customPuzzle(): Helper function that allows the user to input their own custom 
@@ -77,7 +98,7 @@ std::vector<std::vector<int>> Problem::customPuzzle() {
 
 /* parseInput(string input): Helper function to tokenize the input string. 
 This returns a vector with all the numbers inputted by the user. */
-std::vector<int> Problem::parseInput(std::string input) {
+std::vector<int> Problem::parseInput(const std::string& input) {
     std::vector<int> row; 
     std::string tmp;
 
@@ -86,23 +107,4 @@ std::vector<int> Problem::parseInput(std::string input) {
         row.push_back(std::stoi(tmp));
     }
     return row;
-}
-
-/* algorithmChoice(): Helper function to assign a solution algorithm to 
-the problem based on user input */
-int Problem::algorithmChoice() {
-    std::string tmp;
-    int selection;
-    bool inLoop = false;
-
-    std::cout << "\nEnter your choice of algorithm\n(1) Uniform Cost Search\n" 
-        << "(2) A* with the Misplaced Tile Heuristic\n"
-        << "(3) A* with the Euclidian Distance Heuristic\n";
-    do {
-        getline(std::cin, tmp);
-        selection = std::stoi(tmp);
-        if (selection < 1 || selection > 3)
-            std::cout << "Enter an available algorithm\n"; 
-    } while (selection < 1 || selection > 3);
-    return selection;
 }

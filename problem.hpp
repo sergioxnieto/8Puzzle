@@ -8,16 +8,18 @@
 
 class Problem {
  public:
+    Problem();
     void init();
 
- private:
-    int algorithmChoice();
-    std::vector<std::vector<int>> defaultPuzzle();
-    std::vector<std::vector<int>> customPuzzle();
-    std::vector<int> parseInput(std::string input);
+    std::vector<std::vector<int>> getStartPuzzle() const;
+    std::vector<std::vector<int>> getGoalPuzzle() const;
 
+ private:
     std::vector<std::vector<int>> start;
     std::vector<std::vector<int>> goal;
-    int algorithm;
+
+    std::vector<std::vector<int>> defaultPuzzle();
+    std::vector<std::vector<int>> customPuzzle();
+    std::vector<int> parseInput(const std::string& input);
 };
 #endif // PROBLEM_HPP
