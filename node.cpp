@@ -1,38 +1,77 @@
 #include "node.hpp"
 
-Node* Node::getParent() {
-    return parent;
+Node::Node(const Problem& puzzle) {
+    state_ = puzzle.GetStartPuzzle();
+    path_cost_ = 0;
+    heuristic_ = 0;
+    total_cost_ = path_cost_ + heuristic_;
 }
 
-std::vector<Node*> Node::getChildren() {
-    return children;
+Node::Node(const Problem& puzzle, std::shared_ptr<Node> parent,
+           const std::string& action) {
+    state_ = puzzle.ToState(parent->state_, action);
+    parent_ = parent;
+    action_ = action;
+    path_cost_ = parent->path_cost_ + puzzle.ActionCost(parent->state_, action);
+    heuristic_ = 0;
+    total_cost_ = path_cost_ + heuristic_;
 }
 
-std::vector<std::vector<int>> Node::getPuzzle() {
-    return puzzle;
+std::shared_ptr<Node> Node::GetParent() const{
+    return parent_;
 }
 
-int Node::getG() {
-    return g;
+std::vector<std::vector<int>> Node::GetState() const{
+    return state_;
 }
 
-int Node::getH() {
-    return h;
+int Node::GetPathCost() const{
+    return path_cost_;
 }
 
-void Node::setH(int h) {
-    this->h = h;
+double Node::GetDistanceToGoal() const{
+    return heuristic_;
 }
 
-int Node::getF() {
-    return f;
+double Node::GetTotalCost() const{
+    return total_cost_;
 }
 
-void Node::setF(int f) {
-    this->f = f;
+void Node::ApplyHeuristic(double heuristic) {
+    heuristic_ = heuristic;
+    total_cost_ = path_cost_ + heuristic_;
 }
 
-// Friend of Node class
-bool operator==(const Node& lhs, const Node& rhs) {
-    return (lhs.puzzle == rhs.puzzle);
+std::string Node::ToString() const {
+    std::string str = "";
+    for (int i = 0; i < state_.size(); i++) {
+        for (int j = 0; j < state_.at(i).size(); j++) {
+            str.append(std::to_string(state_.at(i).at(j)));
+        }
+    }
+    return str;
+}
+
+bool operator>(const Node& lhs, const Node& rhs) {
+    return lhs.total_cost_ > rhs.total_cost_;
+}
+
+std::ostream& operator<<(std::ostream& os, const Node& node) {
+    os << "\n============================" << std::endl;
+    os << "Node Details" << std::endl;
+    os << "Puzzle State: " << std::endl;
+    for (int i = 0; i < node.state_.size(); i++) {
+        os << "[ ";
+        for (int j = 0; j < node.state_.at(i).size(); j++) {
+            os << node.state_.at(i).at(j) << " ";
+        }
+        os << "]" << std::endl;
+    }
+    os << "Action to get here: " <<
+        (node.action_ == "" ? "None (start)" : node.action_) << std::endl;
+    os << "Path Cost: " << node.path_cost_ << std::endl;
+    os << "Heuristic Estimate: " << node.heuristic_ << std::endl;
+    os << "Total Cost: " << node.total_cost_ << std::endl;
+    os << "============================";
+    return os;
 }
