@@ -24,7 +24,6 @@ class Problem {
     /// @return Vector of the available actions: "UP", "DOWN", "LEFT", "RIGHT".
     std::vector<std::string> GetActions() const;
 
-
     /// @brief Generates the state reached by performing an action on the
     /// current state.
     /// @param state  Current puzzle state.

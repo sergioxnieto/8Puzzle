@@ -8,6 +8,12 @@ int main() {
     Problem puzzle;
     puzzle.Init();
 
+    Solver solve;
+    if (!solve.IsSolvable(puzzle)) {
+        std::cout << "\nThis puzzle cannot be solved." << std::endl;
+        return -1;
+    }
+
     std::cout << "\nEnter your choice of Algorithm\n" <<
             "(1) Uniform Cost Search\n" <<
             "(2) A* with the Misplaced Tile heuristic\n" <<
@@ -41,7 +47,6 @@ int main() {
 
     std::cout << "\nFinding solution..." << std::endl;
 
-    Solver solve;
     std::shared_ptr<Node> result;
     if (debug == 'y') {
         switch (selection) {

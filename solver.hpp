@@ -17,6 +17,11 @@
 /// solution path from a root Node to a Node with the goal state.
 class Solver {
  public:
+    /// @brief Tests a Puzzle state to see if it is solvable.
+    /// @param puzzle Fully initialized Puzzle instance.
+    /// @return false if the puzzle configuration cannot be solved.
+    bool IsSolvable(const Problem& puzzle) const;
+
     /// @brief Applies the Uniform Cost Search algorithm to the search graph.
     /// @param puzzle Fully initialized Puzzle instance.
     /// @return Shared pointer to a Node that contains the goal state. Nullptr

@@ -9,6 +9,27 @@ struct SharedPtrCompare {
     }
 };
 
+bool Solver::IsSolvable(const Problem& puzzle) const {
+    std::vector<std::vector<int>> state = puzzle.GetStartPuzzle();
+    std::vector<int> flattened;
+    for (int i = 0; i < state.size(); i++) {
+        for (int j = 0; j < state.at(i).size(); j++) {
+            if (state.at(i).at(j))  {
+                flattened.push_back(state.at(i).at(j));
+            }
+        }
+    }
+    int inversion_count = 0;
+    for (int i = 0; i < flattened.size() - 1; i++) {
+        for (int j = i + 1; j < flattened.size(); j++) {
+            if (flattened.at(j) > flattened.at(i)) {
+                inversion_count++;
+            }
+        }
+    }
+    return (inversion_count % 2 == 0);
+}
+
 std::shared_ptr<Node> Solver::UniformCostSearch(const Problem& puzzle) const {
     SharedPtrCompare desc_order;
     std::vector<std::shared_ptr<Node>> frontier;
@@ -19,6 +40,10 @@ std::shared_ptr<Node> Solver::UniformCostSearch(const Problem& puzzle) const {
 
     frontier.push_back(std::move(node));
     while (!frontier.empty()) {
+        if (frontier.size() > max_frontier_size) {
+            max_frontier_size = frontier.size();
+        }
+
         std::sort(frontier.begin(), frontier.end(), desc_order);
 
         node = frontier.back();  // Lowest-cost node
@@ -52,9 +77,6 @@ std::shared_ptr<Node> Solver::UniformCostSearch(const Problem& puzzle) const {
             }
         }
         num_nodes_expanded++;
-        if (frontier.size() > max_frontier_size) {
-            max_frontier_size = frontier.size();
-        }
     }
     // Failed if we reach here
     return nullptr;
@@ -75,6 +97,10 @@ std::shared_ptr<Node> Solver::UniformCostSearchTrace(
 
     frontier.push_back(std::move(node));
     while (!frontier.empty()) {
+        if (frontier.size() > max_frontier_size) {
+            max_frontier_size = frontier.size();
+        }
+
         std::sort(frontier.begin(), frontier.end(), desc_order);
 
         node = frontier.back();  // Lowest-cost node
@@ -116,9 +142,6 @@ std::shared_ptr<Node> Solver::UniformCostSearchTrace(
             }
         }
         num_nodes_expanded++;
-        if (frontier.size() > max_frontier_size) {
-            max_frontier_size = frontier.size();
-        }
         first_run = false;
     }
     // Failed if we reach here
@@ -141,6 +164,10 @@ std::shared_ptr<Node> Solver::AStarSearch(const Problem& puzzle,
 
     frontier.push_back(std::move(node));
     while (!frontier.empty()) {
+        if (frontier.size() > max_frontier_size) {
+            max_frontier_size = frontier.size();
+        }
+
         std::sort(frontier.begin(), frontier.end(), desc_order);
 
         node = frontier.back();  // Lowest-cost node
@@ -180,9 +207,6 @@ std::shared_ptr<Node> Solver::AStarSearch(const Problem& puzzle,
             }
         }
         num_nodes_expanded++;
-        if (frontier.size() > max_frontier_size) {
-            max_frontier_size = frontier.size();
-        }
     }
     // Failed if we reach here
     return nullptr;
@@ -208,6 +232,10 @@ std::shared_ptr<Node> Solver::AStarSearchTrace(const Problem& puzzle,
 
     frontier.push_back(std::move(node));
     while (!frontier.empty()) {
+        if (frontier.size() > max_frontier_size) {
+            max_frontier_size = frontier.size();
+        }
+
         std::sort(frontier.begin(), frontier.end(), desc_order);
 
         node = frontier.back();  // Lowest-cost node
@@ -254,9 +282,6 @@ std::shared_ptr<Node> Solver::AStarSearchTrace(const Problem& puzzle,
             }
         }
         num_nodes_expanded++;
-        if (frontier.size() > max_frontier_size) {
-            max_frontier_size = frontier.size();
-        }
         first_run = false;
     }
     // Failed if we reach here
