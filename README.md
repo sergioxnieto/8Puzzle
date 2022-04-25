@@ -34,6 +34,17 @@ The two search algorithms were tested on 5 pre-configured 8-Puzzles that had var
 | (4) Doable    |          16         |           4          |             4            |
 | (5) Oh boy    |        24980        |         3777         |            573           |
 
+For fun, I ran the A* Search algorithm using Euclidian Distance (the best algorithm out of the ones available here) on one of the hardest puzzle instances which requires 31 moves to solve. The starting puzzle state is:
+
+|   |   |   |
+|---|---|---|
+| 8 | 6 | 7 |
+| 2 | 5 | 4 |
+| 3 | 0 | 1 |
+
+Sure enough, it took a total of 31 moves to reach the goal state. The algorithm expanded a total of **38587** nodes, and the maximum number of nodes in the queue at any one time was **15724**. On my computer that took 1 hour and 10 minutes to complete, so I decided I wouldn't even attempt it using Uniform Cost Search.
+
+
 ## Installation
 Clone this repository to your local machine.
 ```
